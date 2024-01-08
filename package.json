@@ -1,16 +1,26 @@
 {
-  "name": "nodePractice",
+  "name": "chai-backend",
   "version": "1.0.0",
-  "description": "dada",
-  "main": "index.js",
-  "author": "kashif",
-  "license": "MIT",
+  "description": "a backend at chai aur code channel - youtube",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon -r dotenv/config --experimental-json-modules  src/index.js"
+  },
+  "keywords": [
+    "javascript",
+    "backend",
+    "chai"
+  ],
+  "author": "Hitesh Choudhary",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongoose": "^8.0.3"
+    "mongoose": "^8.0.0"
   }
 }
