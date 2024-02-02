@@ -8,7 +8,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET,
     });
 
-export const upload = async (file) => {
+export const uploadOnCloudinary = async (file) => {
     try {
         const res = await cloudinary.uploader.upload(file, {
             folder: "ecommerce",
