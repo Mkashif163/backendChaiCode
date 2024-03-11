@@ -56,14 +56,14 @@ const userSchema = new mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
-    this.password = await bcryptjs.hash(this.password, 8);
+    this.password = await bcrypt.hash(this.password, 8);
   }
   next();
 });
 
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
-  return await bcryptjs.compare(password, user.password);
+  return await bcrypt.compare(password, user.password);
 };
 
 userSchema.methods.generateAccesToken = function () {

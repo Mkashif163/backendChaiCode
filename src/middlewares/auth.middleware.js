@@ -1,6 +1,6 @@
-import { JsonWebTokenError } from "jsonwebtoken";
-import { asyncHandler } from "../utils/asynHandler";
-import { User } from "../models/user.modal";
+import JsonWebTokenError  from "jsonwebtoken";
+import { asyncHandler } from "../utils/asynHandler.js";
+import { User } from "../models/user.modal.js";
 
 export const verifyJWt = asyncHandler(async (req, res, next) => {
   try {

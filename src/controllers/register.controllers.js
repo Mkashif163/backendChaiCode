@@ -2,7 +2,7 @@ import ApiErrors from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asynHandler.js";
 import { User } from "../models/user.modal.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ApiReponse } from "../utils/ApiResponse.js";
+import  ApiReponse  from "../utils/ApiResponse.js";
 
 const generateAccesTokenAndRefreshToken = async (userId) => {
   try {
@@ -22,10 +22,26 @@ const generateAccesTokenAndRefreshToken = async (userId) => {
 const register = asyncHandler(async (req, res) => {
   const { fullname, email, username, password } = req.body;
 
-  if (
-    [fullname, email, username, password].some((field) => field?.trim() === "")
-  ) {
-    throw new ApiErrors(400, "All fields are required");
+  const missingFields = [];
+
+  if (!fullname?.trim()) {
+    missingFields.push('fullname');
+  }
+
+  if (!email?.trim()) {
+    missingFields.push('email');
+  }
+
+  if (!username?.trim()) {
+    missingFields.push('username');
+  }
+
+  if (!password?.trim()) {
+    missingFields.push('password');
+  }
+
+  if (missingFields.length > 0) {
+    throw new ApiErrors(400, `Missing fields: ${missingFields.join(', ')}`);
   }
 
   const existedUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -35,12 +51,15 @@ const register = asyncHandler(async (req, res) => {
   }
 
   const avatarPath = req.files?.avatar?.path;
-
   const coverPhotoPath = req.files?.coverPhoto?.path;
 
+  console.log('Avatar Path:', avatarPath);
+  console.log('Cover Photo Path:', coverPhotoPath);
+
   if (!avatarPath || !coverPhotoPath) {
-    throw new ApiErrors(400, "All fields are required");
+    throw new ApiErrors(400, "Avatar and cover photo are required");
   }
+
   const avatar = await uploadOnCloudinary(avatarPath);
   const coverPhoto = await uploadOnCloudinary(coverPhotoPath);
 
@@ -66,9 +85,10 @@ const register = asyncHandler(async (req, res) => {
     .json(new ApiReponse(201, "User created successfully", CreatedUser));
 });
 
+
 const login = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
-  if (!email || !userName) {
+  if (!(email || userName)) {
     throw new ApiErrors(400, "Email and username are required");
   }
 
