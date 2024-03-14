@@ -12,6 +12,7 @@ const generateAccessAndRefereshTokens = async(userId) =>{
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
 
+
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
 
@@ -58,6 +59,11 @@ const registerUser = asyncHandler( async (req, res) => {
 
 
     console.log("Avatar", avatar);
+    console.log("Cover Image", coverImage);
+
+    if(!coverImage){
+        throw new ApiError(400, "Cover Image link is required")
+    }
 
     if (!avatar) {
         throw new ApiError(400, "Avatar link is required")
@@ -91,7 +97,6 @@ const registerUser = asyncHandler( async (req, res) => {
 const loginUser = asyncHandler(async (req, res) =>{
 
     const {email, username, password} = req.body
-    console.log(email);
 
     if (!username && !email) {
         throw new ApiError(400, "username or email is required")
